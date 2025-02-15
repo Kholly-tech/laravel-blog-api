@@ -9,6 +9,7 @@ use App\Http\Resources\V1\UserCollection;
 use App\Http\Resources\V1\UserResource;
 use App\Models\Blog;
 use App\Filters\V1\UserFilter;
+use App\Http\Requests\V1\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -30,12 +31,16 @@ class UserController extends Controller
     }
 
     // Create new User
-    public function store() {
-        // Add user Logic
+    public function store(StoreUserRequest $request) {
+        return new UserResource(User::create($request->all()));
     }
 
     public function show(User $user) {
-        // return $user;
+        $includeBlogs = request()->query('includeBlogs');
+        if($includeBlogs) {
+            return new UserResource($user->loadMissing('blogs'));
+        }
+
         return new UserResource(($user));
     }
 }

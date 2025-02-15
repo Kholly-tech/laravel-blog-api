@@ -10,6 +10,7 @@ use App\Http\Resources\V1\UserResource;
 use App\Models\Blog;
 use App\Filters\V1\UserFilter;
 use App\Http\Requests\V1\StoreUserRequest;
+use App\Http\Requests\V1\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -42,5 +43,9 @@ class UserController extends Controller
         }
 
         return new UserResource(($user));
+    }
+
+    public function update(UpdateUserRequest $request, User $user) {
+        $user->update($request->all());
     }
 }
